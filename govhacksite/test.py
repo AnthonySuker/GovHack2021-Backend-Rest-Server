@@ -1,15 +1,16 @@
 import requests
 import io
 import pandas as pd
-url = "https://api.data.abs.gov.au/data/ABS,ABS_REGIONAL_LGA2020/INCOME_2+INCOME_21+HELP_2+LF_6+LF_3+ERP_P_20+ERP_23...?startPeriod=2016"
+url = "https://api.data.abs.gov.au/data/ABS,ABS_REGIONAL_LGA2020/INCOME_21...?startPeriod=2016&endPeriod=2016"
 
 payload={}
 headers = {
   'Accept': 'text/csv'
 }
 
+pd.set_option('display.max_columns', None)
 response = requests.request("GET", url, headers=headers, data=payload)
 
 urlData = response.content
 rawData = pd.read_csv(io.StringIO(urlData.decode('utf-8')))
-print(rawData['DATAFLOW'][0])
+print(rawData.mean(axis=0, skipna= False)['OBS_VALUE'])
