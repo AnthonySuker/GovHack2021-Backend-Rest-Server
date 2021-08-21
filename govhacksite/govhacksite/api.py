@@ -6,23 +6,43 @@ import requests
 import io
 import pandas as pd
 
-class getIncomeHelp(APIView):
+#help debt by age bracket
+dataHelpByAge=0
+#Aus income by LGA (we're just getting the mean value)
+ausIncome=0
 
+def getData():
+    global dataHelpByAge, ausIncome
+    dataHelpByAge = pd.read_csv('govhacksite/rsc/HelpStats.csv')
 
+    print(dataHelpByAge)
+    #Australia mean income
+    url = "https://api.data.abs.gov.au/data/ABS,ABS_REGIONAL_LGA2020/INCOME_2+INCOME_21+HELP_2+LF_6+LF_3+ERP_P_20+ERP_23...?startPeriod=2016"
+    payload={}
+    headers = {
+        'Accept': 'text/csv'
+    }
+    response = requests.request("GET", url, headers=headers, data=payload)
+    urlData = response.content
+    ausIncome = pd.read_csv(io.StringIO(urlData.decode('utf-8')))
+    print('data loaded')
+    
+
+class getHelpDebtComparison(APIView):
     def get(self,request):
-        url = "https://api.data.abs.gov.au/data/ABS,ABS_REGIONAL_LGA2020/INCOME_2+INCOME_21+HELP_2+LF_6+LF_3+ERP_P_20+ERP_23...?startPeriod=2016"
+        global dataHelpByAge
+        userAge = request.data['age']
 
-        payload={}
-        headers = {
-            'Accept': 'text/csv'
-        }
+        for index, row in dataHelpByAge.iterrows():
+            if int(userAge) > int(row['hiAge']):
+                continue
+            else:
+                return Response(row.Debt)
 
-        response = requests.request("GET", url, headers=headers, data=payload)
 
-        urlData = response.content
-        rawData = pd.read_csv(io.StringIO(urlData.decode('utf-8')))
+        return Response(False)
 
-        print(rawData.head())
 
-        return Response(rawData['DATAFLOW'][0])
+# class getDebtAvg(APIView):
+
 
