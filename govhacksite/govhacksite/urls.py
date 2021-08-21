@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from .api import getHelpDebtComparison, getHelpRepayments
+from .api import getHelpDebtComparison, getHelpRepayments,getMeanIncome
 
 from .api import getData
 
@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('helpComparison',getHelpDebtComparison.as_view()),
     path('helpRR',getHelpRepayments.as_view()),
+    path('meanIncome', getMeanIncome.as_view()),
 ]
 
 
