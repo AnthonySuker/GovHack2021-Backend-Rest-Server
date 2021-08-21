@@ -48,12 +48,12 @@ class getHelpRepayments(APIView):
     def get(self,request):
         global dataHelpRepay
         userIncome = request.data['income']
-        for index, row in dataHelpByAge.iterrows():
+        for index, row in dataHelpRepay.iterrows():
             if int(userIncome) > int(row['RIH']):
                 continue
             else:
                 return Response(row.RR)
-        return Response(False)
+        return Response(dataHelpRepay['RR'].iloc[-1])
 
 
 
