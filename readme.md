@@ -1,4 +1,4 @@
-# COV-APP-19
+# Gov Hack 2021 rest server
 
 ## TO SETUP FIRST TIME
 You have to have pip and pipenv installed 
