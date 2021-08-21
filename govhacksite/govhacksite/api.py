@@ -10,10 +10,13 @@ import pandas as pd
 dataHelpByAge=0
 #Aus income by LGA (we're just getting the mean value)
 ausIncome=0
+#Help debt repayments based on income
+dataHelpRepay=0
 
 def getData():
-    global dataHelpByAge, ausIncome
+    global dataHelpByAge, ausIncome, dataHelpRepay
     dataHelpByAge = pd.read_csv('govhacksite/rsc/HelpStats.csv')
+    dataHelpRepay = pd.read_csv('govhacksite/rsc/HelpRepaymentByIncome.csv')
 
     print(dataHelpByAge)
     #Australia mean income
@@ -38,6 +41,20 @@ class getHelpDebtComparison(APIView):
                 continue
             else:
                 return Response(row.Debt)
+
+
+        return Response(False)
+
+class getHelpRepayments(APIView):
+    def get(self,request):
+        global dataHelpRepay
+        userIncome = request.data['income']
+
+        for index, row in dataHelpByAge.iterrows():
+            if int(userIncome) > int(row['RIH']):
+                continue
+            else:
+                return Response(row.RR)
 
 
         return Response(False)
