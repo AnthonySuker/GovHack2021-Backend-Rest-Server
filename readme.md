@@ -1,5 +1,7 @@
 # Gov Hack 2021 rest server
 
+This was is a backend rest server that was meant to be used intandem with a website created for govhack2021. This was abandoned mid project due to deciding a single tier architecture was more appropriate.
+
 ## TO SETUP FIRST TIME
 You have to have pip and pipenv installed 
 if you don't have pipenv installed read the tutorial [here](https://www.pythontutorial.net/python-basics/install-pipenv-windows/)
